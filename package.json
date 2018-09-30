@@ -1,0 +1,25 @@
+{
+  "name": "chatapp-andrew",
+  "version": "1.0.0",
+  "description": "a chat app created while learning from course",
+  "main": "server/server.js",
+  "dependencies": {
+    "express": "^4.16.3",
+    "socket.io": "^2.1.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node server/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Divine-Arrow/chatApp-andrew.git"
+  },
+  "author": "Bhupender Singh (Divine-Arrow)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Divine-Arrow/chatApp-andrew/issues"
+  },
+  "homepage": "https://github.com/Divine-Arrow/chatApp-andrew#readme"
+}
