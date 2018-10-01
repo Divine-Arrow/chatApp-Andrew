@@ -4,10 +4,6 @@ socket.on('connect', () => {
     console.log('connected to the server.');
 
     // sending msg obj to server
-    socket.emit('createMessage', {
-        from: 'current@user.com',
-        msg: 'hellu'
-    });
 
 });
 
@@ -17,6 +13,22 @@ socket.on('disconnect', () => {
 });
 
 // recieve data from server
-socket.on('newMessage', (data)=>{
+socket.on('newMessage', (data) => {
     console.log(data);
+});
+
+// admin
+socket.on('user',(data)=>{
+    console.log(data.text);
+});
+
+socket.on('newUser', (data)=>{
+    console.log(data.text);
+});
+
+socket.emit('createMessage', {
+    from: 'one@gmail.com',
+    text: 'whetever text'
+}, (data)=>{
+    console.log('got it', data);
 });
