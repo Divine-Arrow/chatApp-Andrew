@@ -5,9 +5,8 @@ const
     express = require('express');
 
 // our own modules
-const {
-    generateMessage
-} = require('./utils/message');
+const 
+    {generateMessage} = require('./utils/message');
 
 
 // redefining section
@@ -25,26 +24,15 @@ io.on('connection', (socket) => {
     console.log('new user connected.');
 
     // emit admin greet
-    socket.emit('user', generateMessage('admin', 'welcome to the chatapp'));
+    socket.emit('newMessage', generateMessage('admin', 'welcome to the chatapp'));
 
-    socket.broadcast.emit('newUser', generateMessage('admin', 'new user joined.'));
+    socket.broadcast.emit('newMessage', generateMessage('admin', 'new user joined.'));
 
     // recieving data from front-end user
     socket.on('createMessage', (data, callback) => {
-        console.log("create Message: \n", data);
-        io.emit('newMessage', generateMessage(data.from, data.generateMessage));
-
-        callback('this is fromm the server.');
-
-        /* socket.broadcast.emit('newMessage', {
-            from: data.from,
-            message: data.message,
-            createdAt: new Date().getTime()
-        }); */
-
+        io.emit('newMessage', generateMessage(data.from, data.text));
+        callback('Ok');
     });
-
-    // sending new data to user
 
     // disconnect Event
     socket.on('disconnect', () => {
