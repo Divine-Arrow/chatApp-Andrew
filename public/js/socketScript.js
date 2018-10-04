@@ -29,16 +29,18 @@ $('#message-form').on('submit', (e) => {
 
 // recieve data from server
 socket.on('newMessage', (data) => {
+    const formatedTime = moment(data.createdAt).format('h:mm a');
     var li = $('<li>');
-    li.text(`${data.from} : ${data.text}`);
+    li.text(`${data.from} -${formatedTime} : ${data.text}`);
     $('#messages').append(li);
 });
 
 // maps
 socket.on('newLocationMessage', (data) => {
+    const formatedTime = moment(data.createdAt).format('h:mm a');
     var li = $('<li>');
     var a = $('<a target="_blank">My Current Locatiopn</a>');
-    li.text(`${data.from}: `);
+    li.text(`${data.from}: ${formatedTime} : `);
     a.attr('href', data.url);
     li.append(a);
     $('#messages').append(li);
