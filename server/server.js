@@ -5,8 +5,10 @@ const
     express = require('express');
 
 // our own modules
-const 
-    {generateMessage} = require('./utils/message');
+const {
+    generateMessage,
+    generateLocationMessage
+} = require('./utils/message');
 
 
 // redefining section
@@ -33,11 +35,11 @@ io.on('connection', (socket) => {
         io.emit('newMessage', generateMessage(data.from, data.text));
         callback('Ok');
     });
-    
-    socket.on('createLocationMessage', (coords)=>{
-        io.emit('newMessage', generateMessage('admin', `${coords.latitude}, ${coords.longitude}`));
+
+    socket.on('createLocationMessage', (coords) => {
+        io.emit('newLocationMessage', generateLocationMessage('admin', coords.latitude, coords.longitude));
     });
-    
+
     // disconnect Event
     socket.on('disconnect', () => {
         console.log('disconnected from the user');

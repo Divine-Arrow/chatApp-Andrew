@@ -11,6 +11,8 @@ socket.on('disconnect', () => {
 });
 
 
+
+
 // DOM
 $('#message-form').on('submit', (e) => {
     e.preventDefault();
@@ -28,6 +30,17 @@ socket.on('newMessage', (data) => {
     var li = $('<li>');
     li.text(`${data.from} : ${data.text}`);
     $('#messages').append(li);
+});
+
+// maps
+socket.on('newLocationMessage', (data)=>{
+    var li = $('<li>');
+    var a = $('<a target="_blank">My Current Locatiopn</a>');
+    li.text(`${data.from}: `);
+    a.attr('href', data.url);
+    li.append(a);
+    $('#messages').append(li);
+    console.log(li[0]);
 });
 
 
