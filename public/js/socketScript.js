@@ -16,11 +16,13 @@ socket.on('disconnect', () => {
 // DOM
 $('#message-form').on('submit', (e) => {
     e.preventDefault();
+    var messageTextBox = $('[name=message]');
     socket.emit('createMessage', {
         from: 'User',
-        text: $('[name=message]').val()
+        text: messageTextBox.val()
     }, () => {
-        // callback code goes here.
+        // delete message input
+        messageTextBox.val('');
     })
 });
 
@@ -33,7 +35,7 @@ socket.on('newMessage', (data) => {
 });
 
 // maps
-socket.on('newLocationMessage', (data)=>{
+socket.on('newLocationMessage', (data) => {
     var li = $('<li>');
     var a = $('<a target="_blank">My Current Locatiopn</a>');
     li.text(`${data.from}: `);
@@ -49,13 +51,17 @@ var locationBtn = $('#send-location');
 locationBtn.on('click', () => {
     if (!navigator.geolocation)
         return alert('GeoLocation is not supported by your browser.');
+    locationBtn.attr('disabled', 'disabled').text('sending...');
+
     navigator.geolocation.getCurrentPosition((data) => {
+        locationBtn.removeAttr('disabled').text('Send location');
+
         socket.emit('createLocationMessage', {
             latitude: data.coords.latitude,
             longitude: data.coords.longitude
         });
     }, (e) => {
-        console.log(e);
+        locationBtn.removeAttr('disabled').text('Send location');
         return alert('Error: Unable to Fetch Location.');
     });
 

@@ -33,7 +33,7 @@ io.on('connection', (socket) => {
     // recieving data from front-end user
     socket.on('createMessage', (data, callback) => {
         io.emit('newMessage', generateMessage(data.from, data.text));
-        callback('Ok');
+        callback();
     });
 
     socket.on('createLocationMessage', (coords) => {
