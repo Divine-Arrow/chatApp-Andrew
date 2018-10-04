@@ -23,6 +23,7 @@ $('#message-form').on('submit', (e) => {
     }, () => {
         // delete message input
         messageTextBox.val('');
+        messageTextBox.focus();
     })
 });
 
@@ -30,21 +31,25 @@ $('#message-form').on('submit', (e) => {
 // recieve data from server
 socket.on('newMessage', (data) => {
     const formatedTime = moment(data.createdAt).format('h:mm a');
-    var li = $('<li>');
-    li.text(`${data.from} -${formatedTime} : ${data.text}`);
-    $('#messages').append(li);
+    var template = $('#message-template').html();
+    var html = Mustache.render(template, {
+        from: data.from,
+        text: data.text,
+        createdAt: formatedTime
+    })
+    $('#messages').append(html);
 });
 
 // maps
 socket.on('newLocationMessage', (data) => {
     const formatedTime = moment(data.createdAt).format('h:mm a');
-    var li = $('<li>');
-    var a = $('<a target="_blank">My Current Locatiopn</a>');
-    li.text(`${data.from}: ${formatedTime} : `);
-    a.attr('href', data.url);
-    li.append(a);
-    $('#messages').append(li);
-    console.log(li[0]);
+    var template = $('#location-message-template').html();
+    var html = Mustache.render(template, {
+        from: data.from,
+        url: data.url,
+        createdAt: formatedTime
+    })
+    $('#messages').append(html);
 });
 
 

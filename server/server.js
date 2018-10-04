@@ -25,10 +25,10 @@ app.use(express.static('public'));
 io.on('connection', (socket) => {
     console.log('new user connected.');
 
-    // emit admin greet
-    socket.emit('newMessage', generateMessage('admin', 'welcome to the chatapp'));
+    // emit Admin greet
+    socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chatapp'));
 
-    socket.broadcast.emit('newMessage', generateMessage('admin', 'new user joined.'));
+    socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined.'));
 
     // recieving data from front-end user
     socket.on('createMessage', (data, callback) => {
@@ -37,7 +37,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('createLocationMessage', (coords) => {
-        io.emit('newLocationMessage', generateLocationMessage('admin', coords.latitude, coords.longitude));
+        io.emit('newLocationMessage', generateLocationMessage('Admin', coords.latitude, coords.longitude));
     });
 
     // disconnect Event
