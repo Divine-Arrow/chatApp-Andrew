@@ -5,8 +5,12 @@ const
     express = require('express');
 
 // our own modules
-const {generateMessage,generateLocationMessage} = require('./utils/message'),
-                                 {isRealString} = require('./utils/validation');
+const {
+    generateMessage,
+    generateLocationMessage
+} = require('./utils/message'), {
+    isRealString
+} = require('./utils/validation');
 
 
 // redefining section
@@ -23,16 +27,22 @@ app.use(express.static('public'));
 io.on('connection', (socket) => {
     console.log('new user connected.');
 
-    socket.on('join', (data, callback) => {
-        if (!isRealString(data.name) || !isRealString(data.room))
+    socket.on('join', (params, callback) => {
+        if (!isRealString(params.name) || !isRealString(params.room))
             return callback('All fields are required.');
+        socket.join(params.room);
+        socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chatapp'));
+        socket.broadcast.to(params.room).emit('newMessage', generateMessage('Admin', `${params.name} has joined.`));
         callback();
+
     });
 
     // emit Admin greet
-    socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chatapp'));
+    // socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chatapp'));
 
-    socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined.'));
+    // socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined.'));
+
+
 
     // recieving data from front-end user
     socket.on('createMessage', (data, callback) => {
