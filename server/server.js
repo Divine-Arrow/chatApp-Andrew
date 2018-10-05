@@ -5,10 +5,8 @@ const
     express = require('express');
 
 // our own modules
-const {
-    generateMessage,
-    generateLocationMessage
-} = require('./utils/message');
+const {generateMessage,generateLocationMessage} = require('./utils/message'),
+                                 {isRealString} = require('./utils/validation');
 
 
 // redefining section
@@ -24,6 +22,12 @@ app.use(express.static('public'));
 // socket setup
 io.on('connection', (socket) => {
     console.log('new user connected.');
+
+    socket.on('join', (data, callback) => {
+        if (!isRealString(data.name) || !isRealString(data.room))
+            return callback('All fields are required.');
+        callback();
+    });
 
     // emit Admin greet
     socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chatapp'));
