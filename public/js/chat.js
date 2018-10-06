@@ -13,7 +13,6 @@ var scrollToBottom = () => {
     var lastMessageHeight = newMessage.prev().innerHeight();
 
     if (clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
-        console.log('ra');
         return messages.scrollTop(clientHeight);
     }
 }
@@ -27,7 +26,6 @@ socket.on('connect', () => {
             alert(err);
             window.location.href = '/';
         }
-        console.log('no error from join page');
     })
 });
 
@@ -52,6 +50,16 @@ $('#message-form').on('submit', (e) => {
         messageTextBox.focus();
     })
 });
+
+// typing event
+$('[name=message]').on('focusin', () => {
+    socket.emit('typing');
+})
+
+$('[name=message]').on('focusout', () => {
+    socket.emit('typingoff');
+})
+
 
 
 // recieve data from server
@@ -106,8 +114,22 @@ locationBtn.on('click', () => {
 // list
 socket.on('updateUserList', (user) => {
     var ol = $('<ol>')
-    user.forEach((u) =>{
-        ol.append($('<li>').text(u))
+    user.forEach((u) => {
+        var li = $('<li>').text(u)
+        ol.append(li);
+    });
+    $('#users').html(ol);
+});
+
+socket.on('showTyping', (userName, users) => {
+    var ol = $('<ol>')
+    users.forEach((user) => {
+        var li = $('<li>').text(user)
+        if (user === userName) {
+            var em = $('<em>').text('typing...');
+            li.append(em);
+        }
+        ol.append(li);
     });
     $('#users').html(ol);
 });

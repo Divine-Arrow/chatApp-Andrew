@@ -117,6 +117,10 @@ button:disabled {
     padding: 10px
 }
 
+.chat__sidebar a {
+    text-decoration: none !important;
+}
+
 .chat__sidebar h3 {
     color: #e6eaee;
     margin: 10px 20px;
@@ -127,6 +131,12 @@ button:disabled {
     border: 1px solid #e1e1e1;
     border-radius: 5px;
     margin: 10px
+}
+
+.chat__sidebar li em {
+    /* display: none; */
+    color: #119e00;
+    float: right;
 }
 
 .chat__main {

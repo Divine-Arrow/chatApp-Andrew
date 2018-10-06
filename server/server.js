@@ -31,23 +31,41 @@ app.use(express.static('public'));
 io.on('connection', (socket) => {
     // send rooms list
     var rooms = users.getRoomList();
-    if(rooms) {
+    if (rooms) {
         io.emit('roomsList', rooms);
     }
 
     socket.on('join', (params, callback) => {
-        if (!isRealString(params.name) || !isRealString(params.room))
+        const newRoom = (isRealString(params.name) && isRealString(params.room));
+        const existingRoom = (isRealString(params.name) && isRealString(params.existingRoom)) && params.existingRoom !== 'none';
+        if (!newRoom && !existingRoom)
             return callback('All fields are required.');
+        if (newRoom) {
+            params.room = params.room;
+        } else if (existingRoom) {
+            params.room = params.existingRoom;
+        }
         socket.join(params.room);
         users.removeUser(socket.id);
-        console.log('params: ', params);
         users.addUser(socket.id, params.name, params.room);
         io.to(params.room).emit('updateUserList', users.getUserList(params.room));
         socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chatapp'));
         socket.broadcast.to(params.room).emit('newMessage', generateMessage('Admin', `${params.name} has joined.`));
         callback();
-
     });
+    // typing
+    socket.on('typing', () => {
+        var user = users.getUser(socket.id);
+        if (user)
+            socket.to(user.room).emit('showTyping', user.name, users.getUserList(user.room));
+    })
+
+    //typing off
+    socket.on('typingoff', () => {
+        var user = users.getUser(socket.id);
+        if (user)
+            socket.to(user.room).emit('updateUserList', users.getUserList(user.room));
+    })
 
     // recieving data from front-end user
     socket.on('createMessage', (message, callback) => {
