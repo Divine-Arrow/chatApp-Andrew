@@ -13,6 +13,7 @@ var scrollToBottom = () => {
     var lastMessageHeight = newMessage.prev().innerHeight();
 
     if (clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
+        console.log('ra');
         return messages.scrollTop(clientHeight);
     }
 }
@@ -21,7 +22,7 @@ var scrollToBottom = () => {
 socket.on('connect', () => {
     var params = $.deparam(window.location.search);
     socket.emit('join', params, (err) => {
-        if (err){
+        if (err) {
             alert(err);
             window.location.href = '/';
         }
@@ -98,4 +99,14 @@ locationBtn.on('click', () => {
         return alert('Error: Unable to Fetch Location.');
     });
 
+});
+
+
+// list
+socket.on('updateUserList', (user) => {
+    var ol = $('<ol>')
+    user.forEach((u) =>{
+        ol.append($('<li>').text(u))
+    });
+    $('#users').html(ol);
 });

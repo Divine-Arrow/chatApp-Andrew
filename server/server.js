@@ -5,12 +5,9 @@ const
     express = require('express');
 
 // our own modules
-const {
-    generateMessage,
-    generateLocationMessage
-} = require('./utils/message'), {
-    isRealString
-} = require('./utils/validation');
+const {generateMessage,generateLocationMessage} = require('./utils/message'),
+      {isRealString} = require('./utils/validation'),
+      {Users} = require('./utils/users');
 
 
 // redefining section
@@ -19,6 +16,8 @@ const
     server = http.createServer(app),
     io = socketIO(server),
     port = 3000 || process.env.PORT;
+
+var users = new Users();
 
 // middlewares
 app.use(express.static('public'));
@@ -31,18 +30,14 @@ io.on('connection', (socket) => {
         if (!isRealString(params.name) || !isRealString(params.room))
             return callback('All fields are required.');
         socket.join(params.room);
+        users.removeUser(socket.id);
+        users.addUser(socket.id, params.name, params.room);
+        io.to(params.room).emit('updateUserList', users.getUserList(params.room));
         socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chatapp'));
         socket.broadcast.to(params.room).emit('newMessage', generateMessage('Admin', `${params.name} has joined.`));
         callback();
 
     });
-
-    // emit Admin greet
-    // socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chatapp'));
-
-    // socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined.'));
-
-
 
     // recieving data from front-end user
     socket.on('createMessage', (data, callback) => {
@@ -56,7 +51,11 @@ io.on('connection', (socket) => {
 
     // disconnect Event
     socket.on('disconnect', () => {
-        console.log('disconnected from the user');
+        var user = users.removeUser(socket.id);
+        if(user) {
+            io.to(user.room).emit('newMessage', generateMessage('Admin', `${user.name} has left.`));
+            io.to(user.room).emit('updateUserList', users.getUserList(user.room));
+        }
     });
 
 });
