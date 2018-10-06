@@ -21,6 +21,7 @@ var scrollToBottom = () => {
 // connect event
 socket.on('connect', () => {
     var params = $.deparam(window.location.search);
+    params.room = params.room.toLowerCase();
     socket.emit('join', params, (err) => {
         if (err) {
             alert(err);
