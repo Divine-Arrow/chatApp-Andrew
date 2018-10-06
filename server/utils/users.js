@@ -3,12 +3,13 @@ class Users {
         this.users = [];
     }
     addUser(id, name, room) {
+        room = room.toLowerCase();
         var user = {
             id,
             name,
             room
         };
-        this.users.push(user)
+        this.users.push(user);
         return user;
     }
     removeUser(id) {
