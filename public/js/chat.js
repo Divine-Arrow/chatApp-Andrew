@@ -21,6 +21,7 @@ var scrollToBottom = () => {
 socket.on('connect', () => {
     var params = $.deparam(window.location.search);
     params.room = params.room.toLowerCase();
+    $('#roomNameHead').text(params.room);
     socket.emit('join', params, (err) => {
         if (err) {
             alert(err);
@@ -112,9 +113,9 @@ locationBtn.on('click', () => {
 
 
 // list
-socket.on('updateUserList', (user) => {
+socket.on('updateUserList', (users) => {
     var ol = $('<ol>')
-    user.forEach((u) => {
+    users.forEach((u) => {
         var li = $('<li>').text(u)
         ol.append(li);
     });

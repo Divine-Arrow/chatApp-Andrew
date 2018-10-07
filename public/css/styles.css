@@ -1,8 +1,43 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Nunito';
+    font-weight: 300;
+    font-size: .95rem
+}
+
+nav {
+    width: 100%;
+    background-color: #009688;
+    color: white;
+    padding: 12px 45px;
+    position: fixed;
+    top: 0px;
+}
+
+nav a {
+    text-decoration: none;
+    color: white;
+    font-size: 1.3rem;
+    float: left;
+}
+
+#appName {
+    color: white;
+}
+
+#roomName, #roomNameHead {
+    text-align: center;
+    font-size: 1.3rem;
+    color: #FFEB3B;
+}
+
 button,
 button:hover {
     border: none;
     color: #fff;
-    padding: 10px
+    padding: 10px;
 }
 
 .chat__messages,
@@ -10,14 +45,6 @@ button:hover {
     list-style-type: none
 }
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Roboto', sans-serif;
-    font-weight: 300;
-    font-size: .95rem
-}
 
 li,
 ul {
@@ -52,7 +79,7 @@ button:disabled {
 .centered-form {
     display: flex;
     align-items: center;
-    height: 100vh;
+    height: 92.2vh;
     width: 100vw;
     justify-content: center;
     background: -moz-linear-gradient(125deg, rgba(39, 107, 130, 1) 0, rgba(49, 84, 129, 1) 100%);
@@ -96,13 +123,14 @@ button:disabled {
 }
 
 .chat {
-    display: flex
+    display: flex;
+    margin-top: 51px;
 }
 
 .chat__sidebar {
     overflow-y: scroll;
     width: 260px;
-    height: 100vh;
+    height: 92.2vh;
     background: -moz-linear-gradient(125deg, rgba(39, 107, 130, 1) 0, rgba(49, 84, 129, 1) 100%);
     background: -webkit-gradient(linear, left top, right bottom, color-stop(0, rgba(49, 84, 129, 1)), color-stop(100%, rgba(39, 107, 130, 1)));
     background: -webkit-linear-gradient(125deg, rgba(39, 107, 130, 1) 0, rgba(49, 84, 129, 1) 100%);
@@ -142,7 +170,7 @@ button:disabled {
 .chat__main {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 92.2vh;
     width: 100%
 }
 
