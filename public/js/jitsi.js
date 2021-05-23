@@ -9,6 +9,7 @@ const createRoom = () => {
 
 const startCall = (roomName) => {
     // const domain = 'meet.jit.si';
+    $("#jitsi_div").empty();
     const domain = 'jitsi.meest4bharat.net';
     const options = {
         roomName: roomName??createRoom(),

@@ -62,14 +62,21 @@ $('[name=message]').on('focusout', () => {
     socket.emit('typingoff');
 });
 
+let micBtn = $('#jitsi_mic');
+let cameraBtn = $("#jitsi_camera");
+let tileBtn = $("#jitsi_title");
 
-$("#jitsi_mic").on('click', () => {
+micBtn.on('click', () => {
     myJitsi.executeCommand('toggleAudio');
+    micBtn.text() === 'Mic: Mute' ? micBtn.text('Mic: Unmute'): micBtn.text('Mic: Mute');
 });
-$("#jitsi_camera").on('click', () => {
+
+cameraBtn.on('click', () => {
     myJitsi.executeCommand('toggleVideo');
+    cameraBtn.text() === 'Camera: OFF' ? cameraBtn.text('Camera: ON'): cameraBtn.text('Camera: OFF');
 });
-$("#jitsi_title").on('click', () => {
+
+tileBtn.on('click', () => {
     myJitsi.executeCommand('toggleTileView');
 });
 

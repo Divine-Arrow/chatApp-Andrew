@@ -144,7 +144,7 @@ button:disabled {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100%
+    height: 100%;
 }
 
 #call_notf {
@@ -177,6 +177,14 @@ button:disabled {
     margin: 25px;
     cursor: pointer;
 }
+
+#calling_div #jitsi_buttons #hangUpBtn {
+    transition: 0.3s;
+}
+#calling_div #jitsi_buttons #hangUpBtn:hover {
+    background-color: rgb(243, 100, 100);
+}
+
 #call_notf #reject_call {
     background-color: rgb(243, 100, 100);
 }
