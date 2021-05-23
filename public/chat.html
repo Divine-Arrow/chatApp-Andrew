@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito&family=Roboto&display=swap" rel="stylesheet">
     <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="/css/styles.css">
     <title>Join | ChatApp</title>
@@ -27,13 +28,33 @@
         </div>
         <div class="chat__main">
 
+            <div id="calling_div">
+                <div id="jitsi_div"></div>
+                <div id="jitsi_buttons">
+                    <button id="jitsi_mic">Mic</button>
+                    <button id="jitsi_camera">Camera</button>
+                    <button id="jitsi_title">Title</button>
+                    <button id="hangUpBtn">Hang Up</button>
+                </div>
+            </div>
+
+            <div id="call_notf">
+                <div id="call_nof_container">
+                    <h4>Arvind calling...</h4>
+                    <span id="accept_call" data-call-res="1">Accept</span>
+                    <span id="reject_call" data-call-res="0">Reject</span>
+                </div>
+            </div>
+
             <ol id="messages" class="chat__messages"></ol>
+
             <div class="chat__footer">
                 <form id="message-form">
                     <input name="message" type="text" placeholder="Message" autofocus autocomplete="off" />
                     <button>Send</button>
                 </form>
                 <button id="send-location">Send location</button>
+                <button id="startCall" style="margin: 0px 10px">call</button>
             </div>
         </div>
 
@@ -62,12 +83,14 @@
             </script>
     </div>
 
+    <script src='https://meet.jit.si/external_api.js'></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/libs/jquery-3.3.1.min.js"></script>
     <script src="/js/libs/moment.js"></script>
     <script src="/js/libs/mustache.js"></script>
     <script src="/js/libs/deparam.js"></script>
     <script src="/js/chat.js"></script>
+    <script src="/js/jitsi.js"></script>
 </body>
 
 </html>

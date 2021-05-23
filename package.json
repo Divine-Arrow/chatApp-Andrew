@@ -1,19 +1,20 @@
 {
   "name": "chatapp-andrew",
   "version": "1.0.0",
-  "description": "a chat app created while learning from course",
+  "description": "A basic chat app",
   "main": "server/server.js",
   "scripts": {
     "start": "node server/server.js",
+    "dev": "nodemon server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
     "node": "8.11.1"
   },
   "dependencies": {
-    "express": "^4.16.3",
-    "moment": "^2.22.2",
-    "socket.io": "^2.1.1"
+    "express": "^4.17.1",
+    "moment": "^2.29.1",
+    "socket.io": "^2.4.1"
   },
   "devDependencies": {},
   "repository": {

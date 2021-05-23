@@ -1,5 +1,6 @@
 socket = io();
 
+// jitsi_div
 // scroll
 var scrollToBottom = () => {
     // selectors
@@ -59,35 +60,63 @@ $('[name=message]').on('focusin', () => {
 
 $('[name=message]').on('focusout', () => {
     socket.emit('typingoff');
-})
+});
 
+
+$("#jitsi_mic").on('click', () => {
+    myJitsi.executeCommand('toggleAudio');
+});
+$("#jitsi_camera").on('click', () => {
+    myJitsi.executeCommand('toggleVideo');
+});
+$("#jitsi_title").on('click', () => {
+    myJitsi.executeCommand('toggleTileView');
+});
+
+
+const logMessage = (data) => {
+    const formatedTime = moment(data.createdAt).format('h:mm a');
+    var template;
+    if(data.text) template = $('#message-template').html();
+    if(data.url) template = $('#location-message-template').html();
+    var html = Mustache.render(template, {
+        from: data.from,
+        text: data?.text,
+        url: data?.url,
+        createdAt: formatedTime
+    })
+    $('#messages').append(html);
+    scrollToBottom();
+};
 
 
 // recieve data from server
-socket.on('newMessage', (data) => {
-    const formatedTime = moment(data.createdAt).format('h:mm a');
-    var template = $('#message-template').html();
-    var html = Mustache.render(template, {
-        from: data.from,
-        text: data.text,
-        createdAt: formatedTime
+socket.on('newMessage', logMessage);
+
+// call from server
+socket.on('ringing', (data) => {
+    $('#call_notf h4').text(`${data.userName??'Someone'} calling . . .`);
+    $('#call_notf').show();
+
+    $('#call_notf').on('click', (e) => {
+        const res = e.target.getAttribute("data-call-res");
+        if( (+res) === 0) {
+            socket.emit('rejecting_call');
+            logMessage({from: 'Me', text: 'Rejected'});
+        }
+        else if( (+res) === 1) startCall(data.roomName);;
+        $('#call_notf').hide();
     })
-    $('#messages').append(html);
-    scrollToBottom();
 });
 
-// maps
-socket.on('newLocationMessage', (data) => {
-    const formatedTime = moment(data.createdAt).format('h:mm a');
-    var template = $('#location-message-template').html();
-    var html = Mustache.render(template, {
-        from: data.from,
-        url: data.url,
-        createdAt: formatedTime
-    })
-    $('#messages').append(html);
-    scrollToBottom();
+socket.on('call_rejected', (data) => {
+    $('#call_notf').hide();
+    jitsi_hangUpCall();
+    logMessage({from: 'Me', text: 'Busy'})
+    alert('The person you are calling is BUSY');
 });
+
+socket.on('newLocationMessage', logMessage);
 
 
 // location
@@ -110,7 +139,6 @@ locationBtn.on('click', () => {
     });
 
 });
-
 
 // list
 socket.on('updateUserList', (users) => {

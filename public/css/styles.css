@@ -139,6 +139,53 @@ button:disabled {
     background: linear-gradient(325deg, rgba(39, 107, 130, 1) 0, rgba(49, 84, 129, 1) 100%)
 }
 
+#calling_div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%
+}
+
+#call_notf {
+    width: 400px;
+    padding: 25px;
+    background-color: #2f5a82;
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 5px;
+}
+
+#call_notf h4{
+    font-size: 25px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+#call_notf span {
+    font-size: 20px;
+    background-color: rgb(22, 136, 22);
+    padding: 5px 25px;
+    border-radius: 5px;
+    margin: 25px;
+    cursor: pointer;
+}
+#call_notf #reject_call {
+    background-color: rgb(243, 100, 100);
+}
+
+
+.hideIt {
+    display: none !important;
+}
+
 .chat__footer,
 .chat__sidebar li {
     background: #e6eaee;

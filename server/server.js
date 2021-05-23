@@ -5,14 +5,9 @@ const
     express = require('express');
 
 // our own modules
-const {
-    generateMessage,
-    generateLocationMessage
-} = require('./utils/message'), {
-    isRealString
-} = require('./utils/validation'), {
-    Users
-} = require('./utils/users');
+const   { generateMessage, generateLocationMessage } = require('./utils/message'),
+        { isRealString } = require('./utils/validation'),
+        { Users } = require('./utils/users');
 
 
 // redefining section
@@ -31,9 +26,7 @@ app.use(express.static('public'));
 io.on('connection', (socket) => {
     // send rooms list
     var rooms = users.getRoomList();
-    if (rooms) {
-        io.emit('roomsList', rooms);
-    }
+    if (rooms) io.emit('roomsList', rooms)
 
     socket.on('join', (params, callback) => {
         const newRoom = (isRealString(params.name) && isRealString(params.room));
@@ -56,31 +49,36 @@ io.on('connection', (socket) => {
     // typing
     socket.on('typing', () => {
         var user = users.getUser(socket.id);
-        if (user)
-            socket.to(user.room).emit('showTyping', user.name, users.getUserList(user.room));
+        if (user) socket.to(user.room).emit('showTyping', user.name, users.getUserList(user.room));
     })
 
     //typing off
     socket.on('typingoff', () => {
         var user = users.getUser(socket.id);
-        if (user)
-            socket.to(user.room).emit('updateUserList', users.getUserList(user.room));
+        if (user) socket.to(user.room).emit('updateUserList', users.getUserList(user.room));
     })
 
     // recieving data from front-end user
     socket.on('createMessage', (message, callback) => {
         var user = users.getUser(socket.id);
-        if (user && isRealString(message.text)) {
-            io.to(user.room).emit('newMessage', generateMessage(user.name, message.text));
-        }
+        if (user && isRealString(message.text)) io.to(user.room).emit('newMessage', generateMessage(user.name, message.text));
         callback();
     });
 
     socket.on('createLocationMessage', (coords) => {
         var user = users.getUser(socket.id);
-        if (user) {
-            io.to(user.room).emit('newLocationMessage', generateLocationMessage(user.name, coords.latitude, coords.longitude));
-        }
+        if (user) io.to(user.room).emit('newLocationMessage', generateLocationMessage(user.name, coords.latitude, coords.longitude))
+    });
+
+
+    socket.on('calling', (data) => {
+        var user = users.getUser(socket.id);
+        if (user) socket.broadcast.to(user.room).emit('ringing', { roomName: data.roomName, userName: data.userName});
+    });
+
+    socket.on('rejecting_call', (data) => {
+        var user = users.getUser(socket.id);
+        if (user) socket.broadcast.to(user.room).emit('call_rejected');
     });
 
     // disconnect Event
